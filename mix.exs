@@ -4,7 +4,7 @@ defmodule YamlElixir.Mixfile do
   def project do
     [
       app:             :yaml_elixir,
-      version:         "1.3.0",
+      version:         "1.3.1",
       elixir:          "~> 1.3",
       build_embedded:  Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
@@ -43,9 +43,9 @@ defmodule YamlElixir.Mixfile do
   defp package do
     [
       files:       ["lib", "config", "mix.exs", "README.md"],
-      maintainers: ["Kamil Lelonek"],
+      maintainers: ["Kamil Lelonek", "Eloy Fernández"],
       licenses:    ["MIT"],
-      links:       %{"GitHub" => "https://github.com/KamilLelonek/yaml-elixir"},
+      links:       %{"GitHub" => "https://github.com/AirGateway/yaml-elixir"},
     ]
   end
 end
