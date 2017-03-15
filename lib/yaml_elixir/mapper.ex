@@ -2,12 +2,8 @@ defmodule YamlElixir.Mapper do
   def process([],  _options), do: [%{}]
   def process(nil, _options), do: %{}
 
-  def process(yaml, options) when is_list(yaml),
-    do: Enum.map(yaml, &process(&1, options))
-
-  def process(yaml, options) do
-    yaml |> _to_map(options) |> extract_map()
-  end
+  def process(yaml, options) when is_list(yaml), do: Enum.map(yaml, &process(&1, options))
+  def process(yaml, options), do: yaml |> _to_map(options) |> extract_map()
 
   defp extract_map(nil), do: %{}
   defp extract_map(map), do: map
@@ -27,13 +23,12 @@ defmodule YamlElixir.Mapper do
   defp _to_map({ :yamerl_null, :yamerl_node_null, _tag, _loc }, _options),
     do: nil
 
-  defp _to_map({ _yamler_element, _yamler_node_element, _tag, _loc, elem }, _options),
-    do: elem
-
+  defp _to_map({ _yamler_element, _yamler_node_element, _tag, _loc, elem }, _options), do: elem
   defp _tuples_to_map([], map, _options),
     do: map
 
   defp _tuples_to_map([{ key, val } | rest], map, options) do
+    # IO.inspect key
     case key do
       { :yamerl_seq, :yamerl_node_seq, _tag, _log, _seq, _n } ->
          _tuples_to_map(rest, Map.put_new(map, _to_map(key, options), _to_map(val, options)), options)
@@ -42,9 +37,7 @@ defmodule YamlElixir.Mapper do
     end
   end
 
-  defp key_for(<< ?:, name :: binary >>, atoms: true),
-    do: String.to_atom(name)
-
-  defp key_for(name, _options),
-    do: name
+  defp key_for(<< ?:, name :: binary >>, atoms: true), do: String.to_atom(name)
+  defp key_for(name, [atoms: true]), do: String.to_atom(name)
+  defp key_for(name, _options), do: name
 end
